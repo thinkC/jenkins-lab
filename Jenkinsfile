@@ -13,13 +13,25 @@
 
 pipeline{
     agent any
+    tools {
+        nodejs 'NodeJS 18'
+    }
     stages{
-        stage("Run NODE js script"){
+        stage('Checkout'){
+            steps{
+             //checkout the code from repository
+            checkout scm
+            }
+        }
+        stage("Install Dependencies"){
+            steps{
+                //Install Node Js dependencies
+                sh 'npm install'
+            }
+        }
+        stage("Run Node js script"){
             steps{
                 script{
-                    //install node js if not already installed
-                    def nodejsHome = tool name: 'NodeJS' , type: 'Tool'
-                    env.PATH = "${nodejsHome}/bin:${env.PATH}"
 
                     //Execute the Node.js script
                     sh 'node hello.js'
