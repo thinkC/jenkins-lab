@@ -2,9 +2,9 @@ pipeline{
     agent any
 
     stages{
-        stage("Hello"){
+        stage("Run Python script"){
             steps{
-                echo "Hello Jenkins!"
+                sh "python3 hello.py"
             }
         }
     }
