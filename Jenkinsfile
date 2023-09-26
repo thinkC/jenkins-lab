@@ -23,18 +23,32 @@ pipeline{
             checkout scm
             }
         }
-        stage("Install Dependencies"){
+        stage("Build"){
             steps{
                 //Install Node Js dependencies
                 sh 'npm install'
+                //Build the React application
+                sh 'npm run build'
             }
         }
-        stage("Run Node js script"){
+        stage("Deploy to Local Ubuntu Server"){
             steps{
                 script{
 
-                    //Execute the Node.js script
-                    sh 'node hello.js'
+                    //Define  deployment variables for the local server
+                    def serverUser = "vagrant"
+                    def serverHost = "192.168.33.11"
+                    def deploymentPath = "/home/vagrant/myapp"
+
+                    // directory where the built react application is located
+                    def buildDirectory = 'build'
+                    // Deploy the built React application to the local Ubuntu server using scp
+                    script{
+                        def scpCmd = """
+                            scp  ${buildDirectory}/* vagrant@192.168.33.11:${deploymentPath}
+                        """
+                        sh scpCmd.trim()
+                    }
                 }
             }
 
