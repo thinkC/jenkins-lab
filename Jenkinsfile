@@ -42,10 +42,17 @@ pipeline{
 
                     // directory where the built react application is located
                     def buildDirectory = 'build'
+
+                    // SSH key file (if applicable, leave empty for password authentication)
+                    def sshKeyPath = '/home/vagrant/.ssh/id_rsa'
+
+                                    // Optional: Port for SSH (default is 22)
+                def sshPort = '2200'
+
                     // Deploy the built React application to the local Ubuntu server using scp
                     script{
                         def scpCmd = """
-                            scp  ${buildDirectory}/* vagrant@192.168.33.11:${deploymentPath}
+                            scp -i ${sshKeyPath} -P ${sshPort}  ${buildDirectory}/* vagrant@192.168.33.11:${deploymentPath}
                         """
                         sh scpCmd.trim()
                     }
