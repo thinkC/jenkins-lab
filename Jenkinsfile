@@ -11,70 +11,96 @@
 // }
 
 
-pipeline{
-    agent any
-    tools {
-        nodejs 'NodeJS 18'
-    }
-    stages{
-        stage('Checkout'){
-            steps{
-             //checkout the code from repository
-            checkout scm
-            }
-        }
-        stage("Build"){
-            steps{
-                //Install Node Js dependencies
-                sh 'npm install'
-                //Build the React application
-                sh 'npm run build'
-            }
-        }
-        stage("Deploy to Local Ubuntu Server"){
-            steps{
-                script{
+// pipeline{
+//     agent any
+//     tools {
+//         nodejs 'NodeJS 18'
+//     }
+//     stages{
+//         stage('Checkout'){
+//             steps{
+//              //checkout the code from repository
+//             checkout scm
+//             }
+//         }
+//         stage("Build"){
+//             steps{
+//                 //Install Node Js dependencies
+//                 sh 'npm install'
+//                 //Build the React application
+//                 sh 'npm run build'
+//             }
+//         }
+//         stage("Deploy to Local Ubuntu Server"){
+//             steps{
+//                 script{
 
-                    //Define  deployment variables for the local server
-                    def serverUser = "jenkins"
-                    def serverHost = "192.168.33.12"
-                    def deploymentPath = "/home/vagrant/myapp"
+//                     //Define  deployment variables for the local server
+//                     def serverUser = "jenkins"
+//                     def serverHost = "192.168.33.12"
+//                     def deploymentPath = "/home/vagrant/myapp"
 
-                    // directory where the built react application is located
-                    def buildDirectory = 'build'
+//                     // directory where the built react application is located
+//                     def buildDirectory = 'build'
 
-                    // SSH key file (if applicable, leave empty for password authentication)
-                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+//                     // SSH key file (if applicable, leave empty for password authentication)
+//                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
 
-                                    // Optional: Port for SSH (default is 22)
-                def sshPort = '22'
+//                                     // Optional: Port for SSH (default is 22)
+//                 def sshPort = '22'
 
-                    // Deploy the built React application to the local Ubuntu server using scp
-                    script{
-                        def scpCmd = """
+//                     // Deploy the built React application to the local Ubuntu server using scp
+//                     script{
+//                         def scpCmd = """
                             
-                           scp -i ${sshKeyPath} -P ${sshPort} \\
-                            ${buildDirectory}/asset-manifest.json \\
-                            ${buildDirectory}/favicon.ico \\
-                            ${buildDirectory}/index.html \\
-                            ${buildDirectory}/logo192.png \\
-                            ${buildDirectory}/logo512.png \\
-                            ${buildDirectory}/manifest.json \\
-                            ${buildDirectory}/robots.txt \\
-                            ${serverUser}@${serverHost}:${deploymentPath}
-                        """
-                        sh scpCmd.trim()
-                    }
-                }
-            }
+//                            scp -i ${sshKeyPath} -P ${sshPort} \\
+//                             ${buildDirectory}/asset-manifest.json \\
+//                             ${buildDirectory}/favicon.ico \\
+//                             ${buildDirectory}/index.html \\
+//                             ${buildDirectory}/logo192.png \\
+//                             ${buildDirectory}/logo512.png \\
+//                             ${buildDirectory}/manifest.json \\
+//                             ${buildDirectory}/robots.txt \\
+//                             ${serverUser}@${serverHost}:${deploymentPath}
+//                         """
+//                         sh scpCmd.trim()
+//                     }
+//                 }
+//             }
 
-        }
+//         }
 
+
+// // stage("Install Serve Locally") {
+// //     steps {
+// //         script {
+// //             // Define deployment variables for the local server
+// //             def serverUser = "jenkins"
+// //             def serverHost = "192.168.33.12"
+// //             def deploymentPath = "/home/vagrant/myapp"
+
+// //             // SSH key file (if applicable, leave empty for password authentication)
+// //             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+
+// //             // Optional: Port for SSH (default is 22)
+// //             def sshPort = '22'
+
+// //             def nodePath = '/home/vagrant/.nvm/versions/node/v18.18.0/bin/node' 
+// //             def npmCmd = """
+// //                 ${nodePath} /home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve
+// //             """
+// //             def sshCmd = """
+// //                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${npmCmd}'
+// //             """
+// //             sh sshCmd.trim()
+// //         }
+// //     }
+// // }
 
 // stage("Install Serve Locally") {
 //     steps {
 //         script {
-//             // Define deployment variables for the local server
+//                         // Define deployment variables for the local server
 //             def serverUser = "jenkins"
 //             def serverHost = "192.168.33.12"
 //             def deploymentPath = "/home/vagrant/myapp"
@@ -84,102 +110,156 @@ pipeline{
 
 //             // Optional: Port for SSH (default is 22)
 //             def sshPort = '22'
-
-//             def nodePath = '/home/vagrant/.nvm/versions/node/v18.18.0/bin/node' 
-//             def npmCmd = """
-//                 ${nodePath} /home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve
-//             """
 //             def sshCmd = """
-//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${npmCmd}'
+//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "source ~/.nvm/nvm.sh && nvm use v18.18.0 && cd ${deploymentPath} && npm install serve"
 //             """
 //             sh sshCmd.trim()
 //         }
 //     }
 // }
 
-stage("Install Serve Locally") {
-    steps {
-        script {
-                        // Define deployment variables for the local server
-            def serverUser = "jenkins"
-            def serverHost = "192.168.33.12"
-            def deploymentPath = "/home/vagrant/myapp"
 
-            // SSH key file (if applicable, leave empty for password authentication)
-            def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
 
-            // Optional: Port for SSH (default is 22)
-            def sshPort = '22'
-            def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "source ~/.nvm/nvm.sh && nvm use v18.18.0 && cd ${deploymentPath} && npm install serve"
-            """
-            sh sshCmd.trim()
-        }
+
+
+//     //  stage("Start React App on server02") {
+//     //     steps {
+//     //         script {
+//     //            //Define  deployment variables for the local server
+//     //                 def serverUser = "jenkins"
+//     //                 def serverHost = "192.168.33.12"
+//     //                 def deploymentPath = "/home/vagrant/myapp"
+
+//     //                 // directory where the built react application is located
+//     //                 def buildDirectory = 'build'
+
+//     //                 // SSH key file (if applicable, leave empty for password authentication)
+//     //                 def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+
+//     //                                 // Optional: Port for SSH (default is 22)
+//     //             def sshPort = '22'
+//     //             // SSH into server02 and start the server
+//     //             def sshCmd = """
+//     //                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ./node_modules/.bin/serve -s"
+//     //             """
+//     //             sh sshCmd.trim()
+//     //         }
+//     //     }
+//     // }
+
+
+//     stage("Start React App") {
+//     steps {
+//         script {
+//                            //Define  deployment variables for the local server
+//                     def serverUser = "jenkins"
+//                     def serverHost = "192.168.33.12"
+//                     def deploymentPath = "/home/vagrant/myapp"
+
+//                     // directory where the built react application is located
+//                     def buildDirectory = 'build'
+
+//                     // SSH key file (if applicable, leave empty for password authentication)
+//                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+
+//                                     // Optional: Port for SSH (default is 22)
+//                 def sshPort = '22'
+//             def appDirectory = '/home/vagrant/myapp'
+
+//             // // Navigate to your app directory
+//             // sh "cd ${appDirectory}"
+
+//             // // Start the React app using locally installed serve
+//             // sh "npx serve -s ${appDirectory}"
+
+//             def sshCmd = """
+//             ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && /home/vagrant/.nvm/versions/node/v18.18.0/bin/serve -s"
+//         """
+//         sh sshCmd.trim()
+//         }
+//     }
+// }
+
+
+//     }
+// }
+
+pipeline {
+    agent any
+    tools {
+        nodejs 'NodeJS 18'
     }
-}
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from the repository
+                checkout scm
+            }
+        }
+        stage('Setup NVM and Build') {
+            steps {
+                script {
+                    // Set up NVM environment
+                    def nvmHome = '/home/vagrant/.nvm'
+                    def nvmScript = "${nvmHome}/nvm.sh"
+                    def nvmLoadCmd = "[ -s \"$nvmScript\" ] && \\. \"$nvmScript\""
+                    sh nvmLoadCmd
 
-
-
-
-
-    //  stage("Start React App on server02") {
-    //     steps {
-    //         script {
-    //            //Define  deployment variables for the local server
-    //                 def serverUser = "jenkins"
-    //                 def serverHost = "192.168.33.12"
-    //                 def deploymentPath = "/home/vagrant/myapp"
-
-    //                 // directory where the built react application is located
-    //                 def buildDirectory = 'build'
-
-    //                 // SSH key file (if applicable, leave empty for password authentication)
-    //                 def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-
-    //                                 // Optional: Port for SSH (default is 22)
-    //             def sshPort = '22'
-    //             // SSH into server02 and start the server
-    //             def sshCmd = """
-    //                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ./node_modules/.bin/serve -s"
-    //             """
-    //             sh sshCmd.trim()
-    //         }
-    //     }
-    // }
-
-
-    stage("Start React App") {
-    steps {
-        script {
-                           //Define  deployment variables for the local server
+                    // Change to your project directory
+                    def projectDir = "/home/vagrant/myapp"
+                    dir(projectDir) {
+                        // Install Node.js dependencies
+                        sh 'npm install'
+                        // Build the React application
+                        sh 'npm run build'
+                    }
+                }
+            }
+        }
+        stage('Deploy to Local Ubuntu Server') {
+            steps {
+                script {
+                    // Define deployment variables for the local server
                     def serverUser = "jenkins"
                     def serverHost = "192.168.33.12"
                     def deploymentPath = "/home/vagrant/myapp"
 
-                    // directory where the built react application is located
+                    // Directory where the built React application is located
                     def buildDirectory = 'build'
 
                     // SSH key file (if applicable, leave empty for password authentication)
                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
 
-                                    // Optional: Port for SSH (default is 22)
-                def sshPort = '22'
-            def appDirectory = '/home/vagrant/myapp'
+                    // Optional: Port for SSH (default is 22)
+                    def sshPort = '22'
 
-            // // Navigate to your app directory
-            // sh "cd ${appDirectory}"
-
-            // // Start the React app using locally installed serve
-            // sh "npx serve -s ${appDirectory}"
-
-            def sshCmd = """
-            ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && /home/vagrant/.nvm/versions/node/v18.18.0/bin/serve -s"
-        """
-        sh sshCmd.trim()
+                    // Deploy the built React application to the local Ubuntu server using scp
+                    def scpCmd = """
+                        scp -i ${sshKeyPath} -P ${sshPort} \\
+                            ${buildDirectory}/asset-manifest.json \\
+                            ${buildDirectory}/favicon.ico \\
+                            ${buildDirectory}/index.html \\
+                            ${buildDirectory}/logo192.png \\
+                            ${buildDirectory}/logo512.png \\
+                            ${buildDirectory}/manifest.json \\
+                            ${buildDirectory}/robots.txt \\
+                            ${serverUser}@${serverHost}:${deploymentPath}
+                    """
+                    sh scpCmd.trim()
+                }
+            }
         }
-    }
-}
-
-
+        stage('Start React App') {
+            steps {
+                script {
+                    // Navigate to your project directory
+                    def projectDir = "/home/vagrant/myapp"
+                    dir(projectDir) {
+                        // Start the React app (adjust the command as needed)
+                        sh 'npm start'
+                    }
+                }
+            }
+        }
     }
 }
