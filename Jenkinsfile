@@ -69,5 +69,17 @@ pipeline{
             }
 
         }
+
+     stage("Start React App on server02") {
+        steps {
+            script {
+                // SSH into server02 and start the server
+                def sshCmd = """
+                    ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && serve -s"
+                """
+                sh sshCmd.trim()
+            }
+        }
+    }
     }
 }
