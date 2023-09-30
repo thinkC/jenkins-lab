@@ -92,6 +92,7 @@ pipeline{
 //         }
 //     }
 // }
+
 stage("Install Serve Locally") {
     steps {
         script {
@@ -106,8 +107,9 @@ stage("Install Serve Locally") {
             // Optional: Port for SSH (default is 22)
             def sshPort = '22'
 
+            def nodePath = '/home/vagrant/.nvm/versions/node/v18.18.0/bin/node' 
             def npmCmd = """
-                /home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve
+                ${nodePath} /home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve
             """
             def sshCmd = """
                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${npmCmd}'
@@ -116,6 +118,7 @@ stage("Install Serve Locally") {
         }
     }
 }
+
 
 
 
