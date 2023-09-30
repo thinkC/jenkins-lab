@@ -111,17 +111,15 @@ stage("Install Serve Locally") {
             // Optional: Port for SSH (default is 22)
             def sshPort = '22'
 
-            def nvmCmd = "export NVM_DIR=\"/home/vagrant/.nvm\" && [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\" && [ -s \"\$NVM_DIR/bash_completion\" ] && \. \"\$NVM_DIR/bash_completion\""
-            sh nvmCmd
-
-            def npmCmd = "/home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve"
+            def nvmCmd = "/home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve"
             def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${npmCmd}'
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${nvmCmd}'
             """
             sh sshCmd.trim()
         }
     }
 }
+
 
 
 
