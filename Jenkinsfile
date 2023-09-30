@@ -36,7 +36,7 @@ pipeline{
                 script{
 
                     //Define  deployment variables for the local server
-                    def serverUser = "vagrant"
+                    def serverUser = "jenkins"
                     def serverHost = "192.168.33.12"
                     def deploymentPath = "/home/vagrant/myapp"
 
@@ -44,7 +44,7 @@ pipeline{
                     def buildDirectory = 'build'
 
                     // SSH key file (if applicable, leave empty for password authentication)
-                    def sshKeyPath = '/home/vagrant/.ssh/rsa'
+                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
 
                                     // Optional: Port for SSH (default is 22)
                 def sshPort = '2201'
@@ -52,7 +52,7 @@ pipeline{
                     // Deploy the built React application to the local Ubuntu server using scp
                     script{
                         def scpCmd = """
-                            #scp -i ${sshKeyPath} -P ${sshPort}  ${buildDirectory}/* vagrant@192.168.33.12:${deploymentPath}
+                            
                             scp -i ${sshKeyPath} -P ${sshPort}  ${buildDirectory}/* ${serverUser}@${serverHost}:${deploymentPath}
                         """
                         sh scpCmd.trim()
