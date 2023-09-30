@@ -88,7 +88,7 @@ pipeline{
                 def sshPort = '22'
                 // SSH into server02 and start the server
                 def sshCmd = """
-                    ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && serve -s"
+                    ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && /home/vagrant/.nvm/versions/node/v18.18.0/bin/serve -s"
                 """
                 sh sshCmd.trim()
             }
