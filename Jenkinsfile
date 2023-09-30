@@ -47,7 +47,7 @@ pipeline{
                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
 
                                     // Optional: Port for SSH (default is 22)
-                def sshPort = '2201'
+                def sshPort = '22'
 
                     // Deploy the built React application to the local Ubuntu server using scp
                     script{
