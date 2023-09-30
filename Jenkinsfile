@@ -163,11 +163,16 @@ stage("Install Serve Locally") {
                 def sshPort = '22'
             def appDirectory = '/home/vagrant/myapp'
 
-            // Navigate to your app directory
-            sh "cd ${appDirectory}"
+            // // Navigate to your app directory
+            // sh "cd ${appDirectory}"
 
-            // Start the React app using locally installed serve
-            sh "npx serve -s ${appDirectory}"
+            // // Start the React app using locally installed serve
+            // sh "npx serve -s ${appDirectory}"
+
+            def sshCmd = """
+            ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && /home/vagrant/.nvm/versions/node/v18.18.0/bin/serve -s"
+        """
+        sh sshCmd.trim()
         }
     }
 }
