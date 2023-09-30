@@ -69,10 +69,34 @@ pipeline{
             }
 
         }
-        stage("Install Serve Locally") {
+//         stage("Install Serve Locally") {
+//     steps {
+//         script {
+//                  //Define  deployment variables for the local server
+//                     def serverUser = "jenkins"
+//                     def serverHost = "192.168.33.12"
+//                     def deploymentPath = "/home/vagrant/myapp"
+
+//                     // directory where the built react application is located
+//                     def buildDirectory = 'build'
+
+//                     // SSH key file (if applicable, leave empty for password authentication)
+//                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+
+//                                     // Optional: Port for SSH (default is 22)
+//                 def sshPort = '22'
+//             def sshCmd = """
+//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && npm install serve"
+//             """
+//             sh sshCmd.trim()
+//         }
+//     }
+// }
+stage("Install Serve Locally") {
     steps {
         script {
-                 //Define  deployment variables for the local server
+
+                             //Define  deployment variables for the local server
                     def serverUser = "jenkins"
                     def serverHost = "192.168.33.12"
                     def deploymentPath = "/home/vagrant/myapp"
@@ -85,18 +109,50 @@ pipeline{
 
                                     // Optional: Port for SSH (default is 22)
                 def sshPort = '22'
+            def npmPath = sh(
+                returnStatus: true,
+                script: "ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} 'which npm'"
+            ).trim()
+
             def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && npm install serve"
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${npmPath} install serve"
             """
             sh sshCmd.trim()
         }
     }
 }
 
-     stage("Start React App on server02") {
-        steps {
-            script {
-               //Define  deployment variables for the local server
+
+    //  stage("Start React App on server02") {
+    //     steps {
+    //         script {
+    //            //Define  deployment variables for the local server
+    //                 def serverUser = "jenkins"
+    //                 def serverHost = "192.168.33.12"
+    //                 def deploymentPath = "/home/vagrant/myapp"
+
+    //                 // directory where the built react application is located
+    //                 def buildDirectory = 'build'
+
+    //                 // SSH key file (if applicable, leave empty for password authentication)
+    //                 def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+
+    //                                 // Optional: Port for SSH (default is 22)
+    //             def sshPort = '22'
+    //             // SSH into server02 and start the server
+    //             def sshCmd = """
+    //                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ./node_modules/.bin/serve -s"
+    //             """
+    //             sh sshCmd.trim()
+    //         }
+    //     }
+    // }
+
+
+    stage("Start React App") {
+    steps {
+        script {
+                           //Define  deployment variables for the local server
                     def serverUser = "jenkins"
                     def serverHost = "192.168.33.12"
                     def deploymentPath = "/home/vagrant/myapp"
@@ -109,13 +165,17 @@ pipeline{
 
                                     // Optional: Port for SSH (default is 22)
                 def sshPort = '22'
-                // SSH into server02 and start the server
-                def sshCmd = """
-                    ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ./node_modules/.bin/serve -s"
-                """
-                sh sshCmd.trim()
-            }
+            def appDirectory = '/home/vagrant/myapp'
+
+            // Navigate to your app directory
+            sh "cd ${appDirectory}"
+
+            // Start the React app using locally installed serve
+            sh "npx serve -s ${appDirectory}"
         }
     }
+}
+
+
     }
 }
