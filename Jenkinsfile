@@ -100,7 +100,7 @@ pipeline{
 stage("Install Serve Locally") {
     steps {
         script {
-            // Define deployment variables for the local server
+                        // Define deployment variables for the local server
             def serverUser = "jenkins"
             def serverHost = "192.168.33.12"
             def deploymentPath = "/home/vagrant/myapp"
@@ -110,15 +110,14 @@ stage("Install Serve Locally") {
 
             // Optional: Port for SSH (default is 22)
             def sshPort = '22'
-
-            def nvmCmd = "/home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve"
             def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${nvmCmd}'
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "source ~/.nvm/nvm.sh && nvm use v18.18.0 && cd ${deploymentPath} && npm install serve"
             """
             sh sshCmd.trim()
         }
     }
 }
+
 
 
 
