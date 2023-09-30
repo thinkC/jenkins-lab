@@ -73,6 +73,19 @@ pipeline{
      stage("Start React App on server02") {
         steps {
             script {
+               //Define  deployment variables for the local server
+                    def serverUser = "jenkins"
+                    def serverHost = "192.168.33.12"
+                    def deploymentPath = "/home/vagrant/myapp"
+
+                    // directory where the built react application is located
+                    def buildDirectory = 'build'
+
+                    // SSH key file (if applicable, leave empty for password authentication)
+                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+
+                                    // Optional: Port for SSH (default is 22)
+                def sshPort = '22'
                 // SSH into server02 and start the server
                 def sshCmd = """
                     ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && serve -s"
