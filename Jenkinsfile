@@ -69,24 +69,28 @@ pipeline{
             }
 
         }
-//         stage("Install Serve Locally") {
+
+
+// stage("Install Serve Locally") {
 //     steps {
 //         script {
-//                  //Define  deployment variables for the local server
-//                     def serverUser = "jenkins"
-//                     def serverHost = "192.168.33.12"
-//                     def deploymentPath = "/home/vagrant/myapp"
+//             // Define deployment variables for the local server
+//             def serverUser = "jenkins"
+//             def serverHost = "192.168.33.12"
+//             def deploymentPath = "/home/vagrant/myapp"
 
-//                     // directory where the built react application is located
-//                     def buildDirectory = 'build'
+//             // SSH key file (if applicable, leave empty for password authentication)
+//             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
 
-//                     // SSH key file (if applicable, leave empty for password authentication)
-//                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+//             // Optional: Port for SSH (default is 22)
+//             def sshPort = '22'
 
-//                                     // Optional: Port for SSH (default is 22)
-//                 def sshPort = '22'
+//             def nodePath = '/home/vagrant/.nvm/versions/node/v18.18.0/bin/node' 
+//             def npmCmd = """
+//                 ${nodePath} /home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve
+//             """
 //             def sshCmd = """
-//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && npm install serve"
+//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${npmCmd}'
 //             """
 //             sh sshCmd.trim()
 //         }
@@ -107,10 +111,10 @@ stage("Install Serve Locally") {
             // Optional: Port for SSH (default is 22)
             def sshPort = '22'
 
-            def nodePath = '/home/vagrant/.nvm/versions/node/v18.18.0/bin/node' 
-            def npmCmd = """
-                ${nodePath} /home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve
-            """
+            def nvmCmd = "export NVM_DIR=\"/home/vagrant/.nvm\" && [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\" && [ -s \"\$NVM_DIR/bash_completion\" ] && \. \"\$NVM_DIR/bash_completion\""
+            sh nvmCmd
+
+            def npmCmd = "/home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve"
             def sshCmd = """
                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${npmCmd}'
             """
@@ -118,7 +122,6 @@ stage("Install Serve Locally") {
         }
     }
 }
-
 
 
 
