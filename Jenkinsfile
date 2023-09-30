@@ -109,13 +109,13 @@ stage("Install Serve Locally") {
 
                                     // Optional: Port for SSH (default is 22)
                 def sshPort = '22'
-                def npmPath = sh(
-                    returnStdout: true,
-                    script: "ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} 'which npm'"
-                ).trim()
+            def npmPath = sh(
+                returnStdout: true,
+                script: "ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} 'which npm'"
+            ).trim()
 
             def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${npmPath} install serve"
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "${npmPath} install serve"
             """
             sh sshCmd.trim()
         }
