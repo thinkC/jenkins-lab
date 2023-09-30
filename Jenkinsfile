@@ -95,32 +95,28 @@ pipeline{
 stage("Install Serve Locally") {
     steps {
         script {
+            // Define deployment variables for the local server
+            def serverUser = "jenkins"
+            def serverHost = "192.168.33.12"
+            def deploymentPath = "/home/vagrant/myapp"
 
-                             //Define  deployment variables for the local server
-                    def serverUser = "jenkins"
-                    def serverHost = "192.168.33.12"
-                    def deploymentPath = "/home/vagrant/myapp"
+            // SSH key file (if applicable, leave empty for password authentication)
+            def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
 
-                    // directory where the built react application is located
-                    def buildDirectory = 'build'
+            // Optional: Port for SSH (default is 22)
+            def sshPort = '22'
 
-                    // SSH key file (if applicable, leave empty for password authentication)
-                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-
-                                    // Optional: Port for SSH (default is 22)
-                def sshPort = '22'
-            def npmPath = sh(
-                returnStdout: true,
-                script: "ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} 'which npm'"
-            ).trim()
-
+            def npmCmd = """
+                /home/vagrant/.nvm/versions/node/v18.18.0/bin/npm install -g serve
+            """
             def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "${npmPath} install serve"
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} '${npmCmd}'
             """
             sh sshCmd.trim()
         }
     }
 }
+
 
 
     //  stage("Start React App on server02") {
