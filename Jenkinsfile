@@ -53,7 +53,15 @@ pipeline{
                     script{
                         def scpCmd = """
                             
-                            scp -i ${sshKeyPath} -P ${sshPort}  ${buildDirectory}/* ${serverUser}@${serverHost}:${deploymentPath}
+                           scp -i ${sshKeyPath} -P ${sshPort} \\
+                            ${buildDirectory}/asset-manifest.json \\
+                            ${buildDirectory}/favicon.ico \\
+                            ${buildDirectory}/index.html \\
+                            ${buildDirectory}/logo192.png \\
+                            ${buildDirectory}/logo512.png \\
+                            ${buildDirectory}/manifest.json \\
+                            ${buildDirectory}/robots.txt \\
+                            ${serverUser}@${serverHost}:${deploymentPath}
                         """
                         sh scpCmd.trim()
                     }
