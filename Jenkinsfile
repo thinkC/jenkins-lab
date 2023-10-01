@@ -437,61 +437,61 @@ stage("Install Serve Locally") {
 
 //was almost working
 
-// stage("Start React App") {
-//             steps {
-//                 script {
-//                     // Define deployment variables for the local server
-//                     def serverUser = "jenkins"
-//                     def serverHost = "192.168.33.12"
-//                     def deploymentPath = "/home/jenkins/myapp"
-//                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-//                     def sshPort = '22'
+stage("Start React App") {
+            steps {
+                script {
+                    // Define deployment variables for the local server
+                    def serverUser = "jenkins"
+                    def serverHost = "192.168.33.12"
+                    def deploymentPath = "/home/jenkins/myapp"
+                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+                    def sshPort = '22'
 
-//                     // Specify the full path to 'serve'
-//                     def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build "
+                    // Specify the full path to 'serve'
+                    def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build "
                     
 
 
-//                     // Add the npm global bin directory to the PATH
-//                     def npmGlobalBin = "/home/jenkins/.nvm/versions/node/v18.0.0/bin"
-//                     def exportPathCmd = "export PATH=\$PATH:${npmGlobalBin}"
+                    // Add the npm global bin directory to the PATH
+                    def npmGlobalBin = "/home/jenkins/.nvm/versions/node/v18.0.0/bin"
+                    def exportPathCmd = "export PATH=\$PATH:${npmGlobalBin}"
 
-//                     // Execute the serve command remotely
-//                     def sshCmd = """
+                    // Execute the serve command remotely
+                    def sshCmd = """
                         
-//                         ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${exportPathCmd} && ${serveCmd} "
-//                     """
-//                     sh sshCmd.trim()
-//                 }
-//             }
-//         }
-
-
-
-stage("Start React App") {
-    steps {
-        script {
-            // Define deployment variables for the local server
-            def serverUser = "jenkins"
-            def serverHost = "192.168.33.12"
-            def deploymentPath = "/home/jenkins/myapp"
-            def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-            def sshPort = '22'
-
-            // Specify the full path to 'serve' using 'npm bin'
-             def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build "
-
-            // Set up the environment to include 'node' in the PATH
-            def setupEnvCmd = "source ~/.bashrc"
-
-            // Execute the setup environment command and then run the serve command remotely
-            def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${setupEnvCmd} && ${serveCmd} -l 0.0.0.0 -p 3000"
-            """
-            sh sshCmd.trim()
+                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${exportPathCmd} && ${serveCmd} "
+                    """
+                    sh sshCmd.trim()
+                }
+            }
         }
-    }
-}
+
+
+
+// stage("Start React App") {
+//     steps {
+//         script {
+//             // Define deployment variables for the local server
+//             def serverUser = "jenkins"
+//             def serverHost = "192.168.33.12"
+//             def deploymentPath = "/home/jenkins/myapp"
+//             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+//             def sshPort = '22'
+
+//             // Specify the full path to 'serve' using 'npm bin'
+//              def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build "
+
+//             // Set up the environment to include 'node' in the PATH
+//             def setupEnvCmd = "source ~/.bashrc"
+
+//             // Execute the setup environment command and then run the serve command remotely
+//             def sshCmd = """
+//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${setupEnvCmd} && ${serveCmd} -l 0.0.0.0 -p 3000"
+//             """
+//             sh sshCmd.trim()
+//         }
+//     }
+// }
 
 
 
