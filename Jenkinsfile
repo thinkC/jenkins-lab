@@ -457,7 +457,8 @@ stage("Start React App") {
 
                     // Execute the serve command remotely
                     def sshCmd = """
-                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${exportPathCmd} && ${serveCmd} -l 0.0.0.0 -p 3000"
+                        
+                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && source ~/.bashrc && ${serveCmd} -s build -l 0.0.0.0 -p 3000"
                     """
                     sh sshCmd.trim()
                 }
