@@ -448,7 +448,7 @@ stage("Start React App") {
                     def sshPort = '22'
 
                     // Specify the full path to 'serve'
-                    def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build "
+                    def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build -l 0.0.0.0 -p 32889"
                     
 
 
