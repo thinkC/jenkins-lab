@@ -273,6 +273,63 @@
 // }
 
 
+// pipeline {
+//     agent any
+//     tools {
+//         // Define a custom NodeJS tool named 'NodeJS 18' for Node.js version 18.0.0
+//         nodejs 'NodeJS 18'
+//     }
+//     stages {
+//         stage('Checkout') {
+//             steps {
+//                 // Checkout the code from the repository
+//                 checkout scm
+//             }
+//         }
+//         stage("Build") {
+//             steps {
+//                 // Install Node.js dependencies
+//                 sh 'npm install'
+//                 // Build the React application
+//                 sh 'npm run build'
+//             }
+//         }
+//         stage("Deploy to Local Ubuntu Server") {
+//             steps {
+//                 script {
+//                     // Define deployment variables for the local server
+//                     def serverUser = "jenkins"
+//                     def serverHost = "192.168.33.13"
+//                     def deploymentPath = "/var/www/html/"
+//                     def buildDirectory = 'build'
+//                     def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+//                     def sshPort = '22'
+
+//                     // Deploy the built React application to the local Ubuntu server using scp
+//                     def scpCmd = """
+//                         scp -i ${sshKeyPath} -P ${sshPort} \\
+//                         ${buildDirectory}/*
+//                         ${serverUser}@${serverHost}:${deploymentPath}
+//                     """
+//                     sh scpCmd.trim()
+//                 }
+//             }
+//         }
+
+
+
+
+
+
+// //was almost working
+
+
+
+//     }
+// }
+
+
+
 pipeline {
     agent any
     tools {
@@ -307,29 +364,13 @@ pipeline {
 
                     // Deploy the built React application to the local Ubuntu server using scp
                     def scpCmd = """
-                        scp -i ${sshKeyPath} -P ${sshPort} \\
-                        ${buildDirectory}/*
+                        scp -i ${sshKeyPath} -P ${sshPort} -r \\
+                        ${buildDirectory}/* \\
                         ${serverUser}@${serverHost}:${deploymentPath}
                     """
                     sh scpCmd.trim()
                 }
             }
         }
-
-
-
-
-
-
-//was almost working
-
-
-
-
-
-
-
-
-
     }
 }
