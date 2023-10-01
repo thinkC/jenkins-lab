@@ -364,9 +364,8 @@ pipeline {
 
                     // Deploy the built React application to the local Ubuntu server using scp
                     def scpCmd = """
-                        scp -v -i ${sshKeyPath} -P ${sshPort} -r \\
-                        ${buildDirectory} \\
-                        ${serverUser}@${serverHost}:${deploymentPath}
+                        scp -v -i ${sshKeyPath} -P ${sshPort} -r ${buildDirectory} ${serverUser}@${serverHost}:${deploymentPath}
+                     
                     """
                     sh scpCmd.trim()
                 }
