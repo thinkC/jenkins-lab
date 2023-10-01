@@ -390,6 +390,31 @@ stage("Install Serve Locally") {
 // }
 
 
+//delete?
+
+// stage("Start React App") {
+//     steps {
+//         script {
+//             // Define deployment variables for the local server
+//             def serverUser = "jenkins"
+//             def serverHost = "192.168.33.12"
+//             def deploymentPath = "/home/jenkins/myapp"
+//             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+//             def sshPort = '22'
+
+//             // Specify the full path to 'serve' using 'npm bin'
+//             def serveCmd = "\$(npm bin)/serve -s build"
+
+//             // Execute the serve command remotely
+//             def sshCmd = """
+//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${serveCmd}"
+//             """
+//             sh sshCmd.trim()
+//         }
+//     }
+// }
+
+
 stage("Start React App") {
     steps {
         script {
@@ -400,10 +425,8 @@ stage("Start React App") {
             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
             def sshPort = '22'
 
-            // Specify the full path to 'serve' using 'npm bin'
-            def serveCmd = "\$(npm bin)/serve -s build"
-
             // Execute the serve command remotely
+            def serveCmd = "serve -s build"
             def sshCmd = """
                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${serveCmd}"
             """
