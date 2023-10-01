@@ -378,7 +378,7 @@ stage("Deploy to Local Ubuntu Server") {
         script {
             // Define deployment variables for the local server
             def serverUser = "jenkins"
-            def serverHost = "192.168.33.13"
+            def serverHost = "192.168.33.12"
             def deploymentPath = "/var/www/html/"
             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
             def sshPort = '22'
