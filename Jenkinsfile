@@ -401,7 +401,7 @@ stage("Start React App") {
             def sshPort = '22'
 
             // Specify the full path to 'serve' using 'npm bin'
-            def serveCmd = "$(npm bin)/serve -s build"
+            def serveCmd = "\$(npm bin)/serve -s build"
 
             // Execute the serve command remotely
             def sshCmd = """
@@ -411,6 +411,7 @@ stage("Start React App") {
         }
     }
 }
+
 
 
     }
