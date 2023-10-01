@@ -341,24 +341,45 @@ pipeline {
             }
         }
 
-        stage("Start React App") {
-            steps {
-                script {
-                    // Define deployment variables for the local server
-                    def serverUser = "jenkins"
-                    def serverHost = "192.168.33.12"
-                    def deploymentPath = "/home/jenkins/myapp"
-                    def buildDirectory = 'build'
-                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-                    def sshPort = '22'
+        // stage("Start React App") {
+        //     steps {
+        //         script {
+        //             // Define deployment variables for the local server
+        //             def serverUser = "jenkins"
+        //             def serverHost = "192.168.33.12"
+        //             def deploymentPath = "/home/jenkins/myapp"
+        //             def buildDirectory = 'build'
+        //             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+        //             def sshPort = '22'
 
-                    // Start the React app using the 'serve' package with Node.js version 18.0.0
-                    def sshCmd = """
-                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && $(npm bin)/serve -s ${buildDirectory}"
-                    """
-                    sh sshCmd.trim()
-                }
-            }
+        //             // Start the React app using the 'serve' package with Node.js version 18.0.0
+        //             def sshCmd = """
+        //                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && $(npm bin)/serve -s ${buildDirectory}"
+        //             """
+        //             sh sshCmd.trim()
+        //         }
+        //     }
+        // }
+
+        stage("Start React App") {
+    steps {
+        script {
+            // Define deployment variables for the local server
+            def serverUser = "jenkins"
+            def serverHost = "192.168.33.12"
+            def deploymentPath = "/home/jenkins/myapp"
+            def buildDirectory = 'build'
+            def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+            def sshPort = '22'
+
+            // Start the React app using the 'serve' package with Node.js version 18.0.0
+            def sshCmd = """
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && \$(npm bin)/serve -s ${buildDirectory}"
+            """
+            sh sshCmd.trim()
         }
+    }
+}
+
     }
 }
