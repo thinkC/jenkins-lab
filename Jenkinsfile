@@ -321,6 +321,7 @@ pipeline {
                 }
             }
         }
+
 stage("Install Serve Locally") {
     steps {
         script {
@@ -331,17 +332,22 @@ stage("Install Serve Locally") {
             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
             def sshPort = '22'
 
-            // Specify the full path to npm
+            // Source NVM to ensure Node.js and NPM from NVM are used
+            def nvmCmd = "source /home/jenkins/.nvm/nvm.sh"
             def npmCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/npm"
 
             // Install the 'serve' package globally using Node.js version 18.0.0
+            def serveInstallCmd = "${nvmCmd} && ${npmCmd} install -g serve"
+
+            // Execute the serve installation command remotely
             def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "${npmCmd} install -g serve"
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "${serveInstallCmd}"
             """
             sh sshCmd.trim()
         }
     }
 }
+
 
         // stage("Start React App") {
         //     steps {
