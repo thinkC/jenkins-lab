@@ -321,25 +321,27 @@ pipeline {
                 }
             }
         }
+stage("Install Serve Locally") {
+    steps {
+        script {
+            // Define deployment variables for the local server
+            def serverUser = "jenkins"
+            def serverHost = "192.168.33.12"
+            def deploymentPath = "/home/jenkins/myapp"
+            def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+            def sshPort = '22'
 
-        stage("Install Serve Locally") {
-            steps {
-                script {
-                    // Define deployment variables for the local server
-                    def serverUser = "jenkins"
-                    def serverHost = "192.168.33.12"
-                    def deploymentPath = "/home/jenkins/myapp"
-                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-                    def sshPort = '22'
+            // Specify the full path to npm
+            def npmCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/npm"
 
-                    // Install the 'serve' package globally using Node.js version 18.0.0
-                    def sshCmd = """
-                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "npm install -g serve"
-                    """
-                    sh sshCmd.trim()
-                }
-            }
+            // Install the 'serve' package globally using Node.js version 18.0.0
+            def sshCmd = """
+                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "${npmCmd} install -g serve"
+            """
+            sh sshCmd.trim()
         }
+    }
+}
 
         // stage("Start React App") {
         //     steps {
