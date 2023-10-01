@@ -200,13 +200,13 @@ pipeline {
             steps {
                 script {
                     // Set up NVM environment
-                    def nvmHome = '/home/vagrant/.nvm'
+                    def nvmHome = '/home/jenkins/.nvm'
                     def nvmScript = "${nvmHome}/nvm.sh"
                     def nvmLoadCmd = "[ -s \"$nvmScript\" ] && \\. \"$nvmScript\""
                     sh nvmLoadCmd
 
                     // Change to your project directory
-                    def projectDir = "/home/vagrant/myapp"
+                    def projectDir = "/home/jenkins/myapp"
                     dir(projectDir) {
                         // Install Node.js dependencies
                         sh 'npm install'
@@ -222,7 +222,7 @@ pipeline {
                     // Define deployment variables for the local server
                     def serverUser = "jenkins"
                     def serverHost = "192.168.33.12"
-                    def deploymentPath = "/home/vagrant/myapp"
+                    def deploymentPath = "/home/jenkins/myapp"
 
                     // Directory where the built React application is located
                     def buildDirectory = 'build'
@@ -253,7 +253,7 @@ pipeline {
             steps {
                 script {
                     // Navigate to your project directory
-                    def projectDir = "/home/vagrant/myapp"
+                    def projectDir = "/home/jenkins/myapp"
                     dir(projectDir) {
                         // Start the React app (adjust the command as needed)
                         sh 'npm start'
