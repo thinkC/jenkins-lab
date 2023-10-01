@@ -447,7 +447,7 @@ stage("Start React App") {
                     def sshPort = '22'
 
                     // Specify the full path to 'serve'
-                    def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build --host 0.0.0.0"
+                    def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build "
                     
 
 
@@ -457,7 +457,7 @@ stage("Start React App") {
 
                     // Execute the serve command remotely
                     def sshCmd = """
-                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${exportPathCmd} && ${serveCmd}"
+                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${exportPathCmd} && ${serveCmd} -l 0.0.0.0 -p 3000"
                     """
                     sh sshCmd.trim()
                 }
