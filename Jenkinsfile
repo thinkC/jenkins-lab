@@ -373,7 +373,7 @@ pipeline {
         //     }
         // }
 
-        stage("Deploy to Local Ubuntu Server") {
+stage("Deploy to Local Ubuntu Server") {
     steps {
         script {
             // Define deployment variables for the local server
@@ -384,7 +384,7 @@ pipeline {
             def sshPort = '22'
 
             // Define the source and destination paths for scp
-            def sourcePath = "${pwd()}/${buildDirectory}" // Jenkins workspace/build
+            def sourcePath = "${pwd()}/build" // Jenkins workspace/build
             def destinationPath = "${serverUser}@${serverHost}:${deploymentPath}"
 
             // Deploy the built React application to the local Ubuntu server using scp
@@ -395,6 +395,7 @@ pipeline {
         }
     }
 }
+
 
     }
 }
