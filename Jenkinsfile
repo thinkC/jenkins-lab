@@ -415,26 +415,52 @@ stage("Install Serve Locally") {
 // }
 
 
+// stage("Start React App") {
+//     steps {
+//         script {
+//             // Define deployment variables for the local server
+//             def serverUser = "jenkins"
+//             def serverHost = "192.168.33.12"
+//             def deploymentPath = "/home/jenkins/myapp"
+//             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+//             def sshPort = '22'
+
+//             // Execute the serve command remotely
+//             def serveCmd = "serve -s build"
+//             def sshCmd = """
+//                 ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${serveCmd}"
+//             """
+//             sh sshCmd.trim()
+//         }
+//     }
+// }
+
+
 stage("Start React App") {
-    steps {
-        script {
-            // Define deployment variables for the local server
-            def serverUser = "jenkins"
-            def serverHost = "192.168.33.12"
-            def deploymentPath = "/home/jenkins/myapp"
-            def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-            def sshPort = '22'
+            steps {
+                script {
+                    // Define deployment variables for the local server
+                    def serverUser = "jenkins"
+                    def serverHost = "192.168.33.12"
+                    def deploymentPath = "/home/jenkins/myapp"
+                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+                    def sshPort = '22'
 
-            // Execute the serve command remotely
-            def serveCmd = "serve -s build"
-            def sshCmd = """
-                ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${serveCmd}"
-            """
-            sh sshCmd.trim()
+                    // Specify the full path to 'serve'
+                    def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build"
+
+                    // Add the npm global bin directory to the PATH
+                    def npmGlobalBin = "/home/jenkins/.nvm/versions/node/v18.0.0/bin"
+                    def exportPathCmd = "export PATH=\$PATH:${npmGlobalBin}"
+
+                    // Execute the serve command remotely
+                    def sshCmd = """
+                        ssh -i ${sshKeyPath} -p ${sshPort} ${serverUser}@${serverHost} "cd ${deploymentPath} && ${exportPathCmd} && ${serveCmd}"
+                    """
+                    sh sshCmd.trim()
+                }
+            }
         }
-    }
-}
-
 
 
     }
