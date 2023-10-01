@@ -479,7 +479,7 @@ stage("Start React App") {
             def sshPort = '22'
 
             // Specify the full path to 'serve' using 'npm bin'
-            def serveCmd = "\$(npm bin)/serve -s build"
+             def serveCmd = "/home/jenkins/.nvm/versions/node/v18.0.0/bin/serve -s build "
 
             // Set up the environment to include 'node' in the PATH
             def setupEnvCmd = "source ~/.bashrc"
