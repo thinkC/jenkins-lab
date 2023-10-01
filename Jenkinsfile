@@ -351,26 +351,50 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage("Deploy to Local Ubuntu Server") {
-            steps {
-                script {
-                    // Define deployment variables for the local server
-                    def serverUser = "jenkins"
-                    def serverHost = "192.168.33.13"
-                    def deploymentPath = "/var/www/html/"
-                    def buildDirectory = 'build'
-                    def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
-                    def sshPort = '22'
+        // stage("Deploy to Local Ubuntu Server") {
+        //     steps {
+        //         script {
+        //             // Define deployment variables for the local server
+        //             def serverUser = "jenkins"
+        //             def serverHost = "192.168.33.13"
+        //             def deploymentPath = "/var/www/html/"
+        //             def buildDirectory = 'build'
+        //             def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+        //             def sshPort = '22'
 
-                    // Deploy the built React application to the local Ubuntu server using scp
-                    def scpCmd = """
+        //             // Deploy the built React application to the local Ubuntu server using scp
+        //             def scpCmd = """
                         
-                        scp -v -i ${sshKeyPath} -P ${sshPort} -r ${buildDirectory}/* ${serverUser}@${serverHost}:${deploymentPath}${buildDirectory}
+        //                 scp -v -i ${sshKeyPath} -P ${sshPort} -r ${buildDirectory}/* ${serverUser}@${serverHost}:${deploymentPath}${buildDirectory}
                      
-                    """
-                    sh scpCmd.trim()
-                }
-            }
+        //             """
+        //             sh scpCmd.trim()
+        //         }
+        //     }
+        // }
+
+        stage("Deploy to Local Ubuntu Server") {
+    steps {
+        script {
+            // Define deployment variables for the local server
+            def serverUser = "jenkins"
+            def serverHost = "192.168.33.13"
+            def deploymentPath = "/var/www/html/"
+            def sshKeyPath = '/var/lib/jenkins/.ssh/rsa'
+            def sshPort = '22'
+
+            // Define the source and destination paths for scp
+            def sourcePath = "${pwd()}/${buildDirectory}" // Jenkins workspace/build
+            def destinationPath = "${serverUser}@${serverHost}:${deploymentPath}"
+
+            // Deploy the built React application to the local Ubuntu server using scp
+            def scpCmd = """
+                scp -v -v -i ${sshKeyPath} -P ${sshPort} -r ${sourcePath}/* ${destinationPath}
+            """
+            sh scpCmd.trim()
         }
+    }
+}
+
     }
 }
