@@ -82,7 +82,7 @@
 
 
 pipeline {
-    // agent any  // Commented out or removed since Ansible is executed on the Ansible server
+    agent any  // Commented out or removed since Ansible is executed on the Ansible server
     
     stages {
         stage('Checkout') {
