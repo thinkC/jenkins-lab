@@ -57,7 +57,6 @@ pipeline {
                         colorized: true,
                         installation: 'Ansible on ansible-ubuntu1', // 
                         playbook: '/home/vagrant/playbook/patch_server.yml',
-                        extras: "-e 'your_extra_vars_if_needed'",
                         inventory: '/home/vagrant/playbook/inventory'
                     )
                 }
