@@ -15,8 +15,8 @@ pipeline{
                     //Run ansible playbook to runLinux server
                     ansiblePlaybook(
                         colorized: true,
-                        installation: 'Ansible on ansible-ubuntu1'
-                        playbook: '/home/vagrant/playbook/patch_server.yml'
+                        installation: 'Ansible on ansible-ubuntu1',
+                        playbook: '/home/vagrant/playbook/patch_server.yml',
                         inventory: '/home/vagrant/playbook/inventory'
                     )
                 }
