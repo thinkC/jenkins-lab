@@ -107,8 +107,8 @@ pipeline {
                     ansiblePlaybook(
     colorized: true,
     installation: 'Ansible on ansible-ubuntu1',  // Adjust this based on your Jenkins configuration
-    playbook: '/var/lib/jenkins/playbook/patch_server.yml',
-    inventory: '/var/lib/jenkins/playbook/inventory'
+    playbook: '/home/vagrant/playbook/patch_server.yml',
+    inventory: '/home/vagrant/playbook/inventory'
 )
 
                 }
