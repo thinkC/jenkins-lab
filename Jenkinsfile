@@ -38,8 +38,47 @@
 /////////////
 
 
+// pipeline {
+//     agent any
+    
+//     stages {
+//         stage('Checkout') {
+//             steps {
+//                 // Check out your source code from the repository
+//                 git 'https://github.com/thinkC/jenkins-lab.git'
+//             }
+//         }
+
+//         stage('Patch Linux Server') {
+//             steps {
+//                 script {
+//                     // Run Ansible playbook to patch the Linux server
+//                     ansiblePlaybook(
+//                         colorized: true,
+//                         installation: 'Ansible on ansible-ubuntu1', // 
+//                         playbook: '/home/vagrant/playbook/patch_server.yml',
+//                         inventory: '/home/vagrant/playbook/inventory'
+//                     )
+//                 }
+//             }
+//         }
+//     }
+
+//     post {
+//         success {
+//             echo 'Patch successful!'
+//         }
+//         failure {
+//             echo 'Patch failed!'
+//         }
+//     }
+// }
+
+
+/////////////////
+
 pipeline {
-    agent any
+    // agent any  // Commented out or removed since Ansible is executed on the Ansible server
     
     stages {
         stage('Checkout') {
@@ -53,12 +92,14 @@ pipeline {
             steps {
                 script {
                     // Run Ansible playbook to patch the Linux server
-                    ansiblePlaybook(
-                        colorized: true,
-                        installation: 'Ansible on ansible-ubuntu1', // 
-                        playbook: '/home/vagrant/playbook/patch_server.yml',
-                        inventory: '/home/vagrant/playbook/inventory'
-                    )
+                    dir('/home/vagrant/playbook/') {
+                        ansiblePlaybook(
+                            colorized: true,
+                            installation: 'Ansible on ansible-ubuntu1',
+                            playbook: 'patch_server.yml',  // Assuming the playbook is in the same directory
+                            inventory: 'inventory'
+                        )
+                    }
                 }
             }
         }
