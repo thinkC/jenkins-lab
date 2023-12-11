@@ -96,20 +96,20 @@ pipeline {
             steps {
                 script {
                     // Run Ansible playbook to patch the Linux server
-                    dir('/home/vagrant/playbook/') {
-                        ansiblePlaybook(
-                            colorized: true,
-                            installation: 'Ansible on ansible-ubuntu1',
-                            playbook: 'patch_server.yml',  // Assuming the playbook is in the same directory
-                            inventory: 'inventory'
-                        )
-                    }
-//                     ansiblePlaybook(
-//     colorized: true,
-//     installation: 'Ansible on ansible-ubuntu1',  // Adjust this based on your Jenkins configuration
-//     playbook: '/home/vagrant/playbook/patch_server.yml',
-//     inventory: '/home/vagrant/playbook/inventory'
-// )
+                    // dir('/home/vagrant/playbook/') {
+                    //     ansiblePlaybook(
+                    //         colorized: true,
+                    //         installation: 'Ansible on ansible-ubuntu1',
+                    //         playbook: 'patch_server.yml',  // Assuming the playbook is in the same directory
+                    //         inventory: 'inventory'
+                    //     )
+                    // }
+                    ansiblePlaybook(
+    colorized: true,
+    installation: 'Ansible on ansible-ubuntu1',  // Adjust this based on your Jenkins configuration
+    playbook: '/home/vagrant/playbook/patch_server.yml',
+    inventory: '/home/vagrant/playbook/inventory'
+)
 
                 }
             }
