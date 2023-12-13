@@ -17,8 +17,8 @@ pipeline {
                     ansiblePlaybook(
                         colorized: true,
                         installation: 'Ansible on jenkins01',  
-                        playbook: '/home/vagrant/playbook/example.yml',
-                        inventory: '/home/vagrant/playbook/inventory',
+                        playbook: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/example.yml',
+                        inventory: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/inventory',
                         credentialsId: ANSIBLE_SSH_CREDENTIALS,
                         disableHostKeyChecking: true
                     )
