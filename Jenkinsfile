@@ -19,8 +19,8 @@ pipeline {
                         installation: 'Ansible on jenkins01',  
                         playbook: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/example.yml',
                         inventory: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/inventory',
-                        credentialsId: ANSIBLE_SSH_CREDENTIALS,
-                        disableHostKeyChecking: true
+                        credentialsId: ANSIBLE_SSH_CREDENTIALS
+                        
                     )
                 }
             }
