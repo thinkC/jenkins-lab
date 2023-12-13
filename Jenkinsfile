@@ -14,7 +14,7 @@ pipeline {
                     ansiblePlaybook(
                         colorized: true,
                         installation: 'Ansible on jenkins01',  
-                        playbook: '/home/vagrant/playbook/patch_server.yml',
+                        playbook: '/home/vagrant/playbook/example.yml',
                         inventory: '/home/vagrant/playbook/inventory'
                     )
                 }
