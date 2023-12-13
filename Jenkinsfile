@@ -19,7 +19,8 @@ pipeline {
                         installation: 'Ansible on jenkins01',  
                         playbook: '/home/vagrant/playbook/example.yml',
                         inventory: '/home/vagrant/playbook/inventory',
-                        credentialsId: ANSIBLE_SSH_CREDENTIALS
+                        credentialsId: ANSIBLE_SSH_CREDENTIALS,
+                        disableHostKeyChecking: true
                     )
                 }
             }
