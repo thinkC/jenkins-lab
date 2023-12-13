@@ -1,5 +1,8 @@
 pipeline {
     agent any
+        environment {
+        ANSIBLE_SSH_CREDENTIALS = credentials('ansible-access')
+    }
     
     stages {
         stage('Checkout') {
@@ -15,7 +18,8 @@ pipeline {
                         colorized: true,
                         installation: 'Ansible on jenkins01',  
                         playbook: '/home/vagrant/playbook/example.yml',
-                        inventory: '/home/vagrant/playbook/inventory'
+                        inventory: '/home/vagrant/playbook/inventory',
+                        credentialsId: ANSIBLE_SSH_CREDENTIALS
                     )
                 }
             }
