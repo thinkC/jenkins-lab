@@ -124,7 +124,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'ANSIBLE_CREDENTIALS_ID', description: 'Credentials ID for Ansible SSH access')
+        string(name: 'ANSIBLE_CREDENTIALS_ID', description: 'ansible-access')
         string(name: 'ANSIBLE_INSTALLATION', defaultValue: 'Ansible on jenkins01', description: 'Ansible installation name')
         string(name: 'INVENTORY_PATH', defaultValue: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/inventory', description: 'Path to Ansible inventory file')
         string(name: 'PLAYBOOK_PATH', defaultValue: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/example.yml', description: 'Path to Ansible playbook file')
