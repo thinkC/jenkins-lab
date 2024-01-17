@@ -11,11 +11,11 @@ pipeline {
             }
         }
 
-        // stage('Patch Linux Server') {
-        //     steps {
-        //         ansiblePlaybook credentialsId: 'ansible-access1', installation: 'Ansible on jenkins01', inventory: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/inventory', playbook: '/var/lib/jenkins/workspace/patch-server-etc-pipeline/example.yml', vaultTmpPath: ''
-        //     }
-        // }
+        stage('Patch Linux Server') {
+            steps {
+                ansiblePlaybook credentialsId: 'ansible-access1', installation: 'Ansible on jenkins01', inventory: '/var/lib/jenkins/workspace/patch-server-etc-pipeline1/inventory', playbook: '/var/lib/jenkins/workspace/patch-server-etc-pipeline1/patchserver.yml', vaultTmpPath: ''
+            }
+        }
     }
 
     post {
